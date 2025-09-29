@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiny Foot Studio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #4a4a4a;
+            overflow-x: hidden;
+            background: #fefefe;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Navigation */
+        nav {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #d4a574;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a4a4a;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #d4a574;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(212, 165, 116, 0.1), rgba(212, 165, 116, 0.1)), #fefefe;
+            padding: 120px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 30%, rgba(212, 165, 116, 0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 70%, rgba(212, 165, 116, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: #d4a574;
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        .hero-cta:hover {
+            background: #c19660;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.4);
+        }
+
+        /* Packages Section */
+        .packages {
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #6a6a6a;
+            margin-bottom: 4rem;
+            font-style: italic;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 4rem;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+
+        /* Center single card */
+        .packages-grid.single-card {
+            display: flex;
+            justify-content: center;
+        }
+
+        .packages-grid.single-card .package-card {
+            max-width: 400px;
+        }
+
+        .package-card {
+            background: #fff;
+            border: 2px solid #f5f5f5;
+            border-radius: 10px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #d4a574, #e6c097);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .package-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .package-card:hover {
+            border-color: #d4a574;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(212, 165, 116, 0.15);
+        }
+
+        .package-featured {
+            border-color: #d4a574;
+            box-shadow: 0 10px 30px rgba(212, 165, 116, 0.2);
+        }
+
+        .package-featured::after {
+            content: 'Most Popular';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d4a574;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .package-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(212, 165, 116, 0.1);
+            border: 2px solid #d4a574;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            font-size: 1.5rem;
+            color: #d4a574;
+        }
+
+        .package-title {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #4a4a4a;
+            margin-bottom: 1rem;
+            font-family: 'Georgia', serif;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #d4a574;
+            margin-bottom: 0.5rem;
+        }
+
+        .package-price-note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+
+        .package-description {
+            color: #6a6a6a;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .package-features {
+            list-style: none;
+            margin-bottom: 2.5rem;
+            text-align: left;
+        }
+
+        .package-features li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            position: relative;
+            padding-left: 30px;
+            color: #5a5a5a;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .package-features li:last-child {
+            border-bottom: none;
+        }
+
+        .package-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #d4a574;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .package-button {
+            background: #d4a574;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .package-button:hover {
+            background: #c19660;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 165, 116, 0.3);
+        }
+
+        /* Contact Form Section */
+        .contact-section {
+            padding: 80px 0;
+            background: #faf9f7;
+            position: relative;
+        }
+
+        .contact-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 30% 20%, rgba(212, 165, 116, 0.05) 0%, transparent 50%);
+        }
+
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .contact-form {
+            background: #fff;
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #4a4a4a;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #f0f0f0;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-family: inherit;
+            color: #4a4a4a;
+            transition: all 0.3s ease;
+            background: #fefefe;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #d4a574;
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            background: #d4a574;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(212, 165, 116, 0.2);
+        }
+
+        .submit-button:hover {
+            background: #c19660;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.3);
+        }
+
+        .submit-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border: 1px solid #c3e6cb;
+            display: none;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: #4a4a4a;
+            color: #ccc;
+            text-align: center;
+            padding: 3rem 0;
+        }
+
+        .footer-content p {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #d4a574;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #e6c097;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .packages-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .packages-grid.single-card .package-card {
+                max-width: 100%;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-form {
+                padding: 2rem;
+            }
+
+            .package-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .package-title {
+                font-size: 1.5rem;
+            }
+
+            .package-price {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .packages {
+                padding: 60px 0;
+            }
+
+            .contact-section {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .package-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .package-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .package-title {
+                font-size: 1.3rem;
+            }
+
+            .package-price {
+                font-size: 1.6rem;
+            }
+
+            .package-button {
+                padding: 12px 25px;
+                font-size: 0.95rem;
+            }
+
+            .package-features li {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ffffff40;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <img src="./logosvg.svg" alt="" style="width: 15rem;">
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#packages">Packages</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Premium Offer Section -->
+    <section id="home" class="packages" style="padding-top: 120px;">
+        <div class="container">
+            <h2 class="section-title">Premium Offer</h2>
+            <p class="section-subtitle">
+                "Limited Slots Available – Book Your Package Today!"
+            </p>
+
+            <div class="packages-grid single-card">
+                <!-- Special Package -->
+                <div class="package-card package-featured">
+                    <div class="package-icon">🌟</div>
+                    <h3 class="package-title">Offer package</h3>
+                    <div class="package-price">₹7,999</div>
+                    <p class="package-price-note">Most popular choice</p>
+                    <p class="package-description">
+                        Our most comprehensive package combining artistry with storytelling,
+                        creating timeless memories for your family.
+                    </p>
+                    <ul class="package-features">
+                        <li>Indoor + Outdoor shoots at Studio Only</li>
+                        <li>2 Hours Photography</li>
+                        <li>150+ HD Images</li>
+                        <li>30 Highly Edited Images</li>
+                        <li>4-5 Different Maternity Props</li>
+                        <li>2 International Gown From Our Side</li>
+                        <li>2 Creative Pictures</li>
+                        <li>1 Drape From Our Side</li>
+                        <li>1 Reel Video</li>
+                        <li>Make up and hair Artist Included</li>
+                    </ul>
+                    <button class="package-button" onclick="scrollToContact()">
+                        Book Now!
+                    </button>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#other-packages" class="hero-cta">Explore Our Packages</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="contact-container">
+                <div class="contact-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number / Whatsapp *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preferredDate">Preferred Session Date *</label>
+                        <input type="date" id="preferredDate" name="preferredDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location *</label>
+                        <textarea id="location" name="location" placeholder="" required></textarea>
+                    </div>
+
+                    <button type="button" class="submit-button" onclick="submitContactForm()">
+                        <span class="button-text">Send My Request</span>
+                    </button>
+
+                    <div id="success-message" class="success-message">
+                        <strong>Thank you!</strong> Your inquiry has been sent successfully. We'll contact you within 24 hours to discuss your photography session.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Other Packages Section -->
+    <section id="other-packages" class="packages">
+        <div class="container">
+            <h2 class="section-title">Photography Packages</h2>
+            <p class="section-subtitle">Capturing your precious moments with care, creativity, and attention to detail</p>
+            
+            <div class="packages-grid">
+                <!-- Essential Package -->
+                <div class="package-card">
+                    <div class="package-icon">👶</div>
+                    <h3 class="package-title">Essential</h3>
+                    <div class="package-price">₹5,999</div>
+                    <p class="package-price-note">Perfect for first-time parents</p>
+                    <p class="package-description">A beautiful introduction to professional photography, capturing those precious early moments with warmth and care.</p>
+                    <ul class="package-features">
+                        <li>2-hour photo session</li>
+                        <li>Indoor shoots at Studio Only</li>
+                        <li>100+ HD Images</li>
+                        <li>20 Highly Edited Images</li>
+                        <li>4-5 different Maternity props</li>
+                        <li>1 International Gown From our side</li>
+                        <li>Make up and hair Artist included</li>
+                    </ul>
+                    <button class="package-button" onclick="scrollToContact()">Choose Essential</button>
+                </div>
+
+                <!-- Premium Package -->
+                <div class="package-card">
+                    <div class="package-icon">🌟</div>
+                    <h3 class="package-title">Premium</h3>
+                    <div class="package-price">₹9,999</div>
+                    <p class="package-price-note">Most popular choice</p>
+                    <p class="package-description">Our most comprehensive package combining artistry with storytelling, creating timeless memories for your family.</p>
+                    <ul class="package-features">
+                        <li>3-hour extended photo session</li>
+                        <li>200+ edited high-resolution images</li>
+                        <li>Premium props & styling consultation</li>
+                        <li>Indoor + Outdoor Photoshoots</li>
+                        <li>2 Reel Video</li>
+                        <li>1Photo frames 12*18 inches (Delivery Charges Not Included)</li>
+                        <li>2 International Gowns from our side</li>
+                    </ul>
+                    <button class="package-button" onclick="scrollToContact()">Choose Premium</button>
+                </div>
+
+                <!-- Luxury Package -->
+                <div class="package-card">
+                    <div class="package-icon">💎</div>
+                    <h3 class="package-title">Luxury</h3>
+                    <div class="package-price">₹15,999</div>
+                    <p class="package-price-note">Complete photography experience</p>
+                    <p class="package-description">The ultimate photography experience with premium styling, custom setups, and heirloom-quality keepsakes.</p>
+                    <ul class="package-features">
+                        <li>Indoor + Outdoor Photoshoots</li>
+                        <li>350+ edited high-resolution images</li>
+                        <li>Custom styling & premium props</li>
+                        <li>20 professional prints (8"x10")</li>
+                        <li>1 Maternity Album (10 Sheets)</li>
+                        <li>8 Creative Images</li>
+                        <li>1 Cinematic Video (2-3 min) & 3 Reels Video</li>
+                        <li>1 Photo frames 20*30 inches (Delivery Charges Not Include)</li>
+                    </ul>
+                    <button class="package-button" onclick="scrollToContact()">Choose Luxury</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Tiny Foot Studio. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#privacy">Privacy Policy</a>
+                    <a href="#terms">Terms of Service</a>
+                    <a href="https://tinyfootstudio.pixieset.com/portfolio/">Gallery</a>
+                </div>
+                <p style="color: #888; font-style: italic;">Capturing life's precious moments with love and artistry</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    function scrollToContact() {
+        document.getElementById('contact').scrollIntoView({ 
+            behavior: 'smooth',
+            block: 'start'
+        });
+
+        // Highlight the form briefly
+        setTimeout(() => {
+            const form = document.querySelector('.contact-form');
+            form.style.borderColor = '#d4a574';
+            form.style.boxShadow = '0 0 20px rgba(212, 165, 116, 0.3)';
+            
+            setTimeout(() => {
+                form.style.borderColor = '#f0f0f0';
+                form.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)';
+            }, 2000);
+        }, 500);
+    }
+
+    function submitContactForm() {
+        // Collect form data
+        const formData = {
+            firstName: document.getElementById('firstName').value.trim(),
+            lastName: document.getElementById('lastName').value.trim(),
+            phone: document.getElementById('phone').value.trim(),
+            preferredDate: document.getElementById('preferredDate').value,
+            location: document.getElementById('location').value.trim()
+        };
+
+        // Basic validation
+        if (!formData.firstName || !formData.lastName || !formData.phone || !formData.location) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        // Get button elements
+        const button = document.querySelector('.submit-button');
+        const buttonText = button.querySelector('.button-text');
+        const originalText = buttonText.textContent;
+
+        // Show loading state
+        button.disabled = true;
+        buttonText.innerHTML = '<span class="loading"></span>Sending...';
+
+        // Replace YOUR_SCRIPT_URL with the Web app URL from Google Apps Script
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXHGQKERcASZw5FuF6i3w_Eau_ykpk5fZxLh-CBJaIks_KDcm7sixENgOKr9Zut1nIrQ/exec';
+
+        // Submit to Google Sheets
+        fetch(SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(() => {
+            // Since we're using no-cors, we assume success
+            document.getElementById('success-message').classList.add('show');
+            
+            // Reset form
+            document.getElementById('firstName').value = '';
+            document.getElementById('lastName').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('preferredDate').value = '';
+            document.getElementById('location').value = '';
+
+            // Scroll to success message
+            document.getElementById('success-message').scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('There was an error sending your message. Please try again or contact us directly.');
+        })
+        .finally(() => {
+            // Reset button
+            button.disabled = false;
+            buttonText.textContent = originalText;
+        });
+    }
+    </script>
+</body>
+</html>
